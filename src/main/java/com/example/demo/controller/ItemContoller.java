@@ -24,6 +24,7 @@ public class ItemContoller {
 	// 商品一覧表示
 	@GetMapping("/items")
 	public String index(
+			@RequestParam(name = "keyword", defaultValue = "") String keyword,
 			@RequestParam(name = "categoryId", defaultValue = "") Integer categoryId,
 			Model model) {
 		
@@ -33,12 +34,15 @@ public class ItemContoller {
 		
 		// リクエストパラメータの有無によって商品リストの取得を分岐
 		List<Item> itemList = null;
-		if (categoryId == null) {
-			// すべての商品を取得
-			itemList = itemRepository.findAll();
-		} else {
+		if (!keyword.isEmpty()) {
+			// k－ワード検索
+			itemList = itemRepository.findByNameContaining(keyword);
+		} else if (categoryId != null) {
 			// カテゴリー検索
 			itemList = itemRepository.findByCategoryId(categoryId);
+		} else {
+			// すべての商品を取得
+			itemList = itemRepository.findAll();
 		}
 		
 		// 取得したカテゴリーリストと取得した商品をスコープに登録
