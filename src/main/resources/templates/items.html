@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.Thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>商品一覧</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+	<!-- ヘッダー領域：ヘッダーのの読み込み -->
+	<th:block th:replace="~{parts/header}"></th:block>
+	<hr />
+	<!-- メインコンテンツ領域 -->
+	<main>
+		<nav>
+			<a href="/items">全商品</a>
+			<a th:each="category:${categoryList}"
+			   th:href="'/items?categoryId=' + ${category.id}"
+			   th:text="${category.name}"></a>
+			<a href="/items">カートを見る</a>
+		</nav>
+		<article>
+			<table border="1">
+				<tr>
+					<th>ID</th>
+					<th>商品名</th>
+					<th>値段</th>
+					<th></th>
+				</tr>
+				<tr th:each="item:${itemList}">
+					<td  th:text="${item.id}"></td>
+					<td  th:text="${item.name}"></td>
+					<td  th:text="${item.price}"></td>
+					<td>
+						<form action="/cart/add" method="get">
+							<button>カートに追加</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</article>
+	</main>
+	<hr  />
+	<!-- フッター領域：フッターの読み込み -->
+	<th:block th:replace="~{parts/footer}"></th:block>
+</body>
+</html>
