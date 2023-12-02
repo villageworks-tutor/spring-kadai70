@@ -1,0 +1,68 @@
+@charset "UTF-8";
+/* 全体 */
+body {
+  background-color: #EFF0F7;
+  text-align: center;
+  min-width: 900px;
+}
+
+/* ヘッダー、ナビゲーションメニュー、フッター */
+header, nav, footer {
+  background-color: #45496A;
+  color: #FFFFFF;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* ヘッダー、ナビゲーション内リンク */
+header a, nav a {
+  color: #FFFFFF;
+}
+
+/* 仕切り線 */
+hr {
+  border-top: 2px dashed #7D8BAE;
+}
+
+/* メイン */
+main {
+  background-color: #FFFFFF;
+  min-height: 50px;
+  padding: 20px;
+}
+
+/* 表組み */
+table {
+  margin: 3px auto;
+  min-width: 800px;
+  border: none #7D8BAE;
+  padding: 10px;
+}
+table th {
+  background-color: #7D8BAE;
+  color: #FFFFFF;
+}
+table td {
+  background-color: white;
+}
+
+/* 送信ボタン */
+button {
+  margin: 5px;
+  padding: 5px 20px;
+  background-color: #E5857B;
+  color: #FFFFFF;
+  border: none;
+  width: 150px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #F1B2B2;
+}
+
+/* Step-2で追加されるスタイル */
+nav a:not(:first-child) {
+  padding-left: 10px;
+}
+
+/*# sourceMappingURL=style.css.map */
