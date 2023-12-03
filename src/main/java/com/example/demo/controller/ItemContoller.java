@@ -25,6 +25,7 @@ public class ItemContoller {
 	@GetMapping("/items")
 	public String index(
 			@RequestParam(name = "keyword", defaultValue = "") String keyword,
+			@RequestParam(name = "maxPrice", defaultValue = "") Integer maxPrice,
 			@RequestParam(name = "categoryId", defaultValue = "") Integer categoryId,
 			Model model) {
 		
@@ -33,16 +34,32 @@ public class ItemContoller {
 		List<Category> categoryList = categoryRepository.findAll();
 		
 		// リクエストパラメータの有無によって商品リストの取得を分岐
+		// TODO: この商品リスト取得はオブジェクト指向の立場からサービスとして分割するのが適切
 		List<Item> itemList = null;
 		if (!keyword.isEmpty()) {
-			// k－ワード検索
-			itemList = itemRepository.findByNameContaining(keyword);
-		} else if (categoryId != null) {
-			// カテゴリー検索
-			itemList = itemRepository.findByCategoryId(categoryId);
+			// キーワードが入力されている場合
+			if (maxPrice != null) {
+				// 価格検索上限が入力されている場合：キーワード検索かつ価格上限値以下検索
+				itemList = itemRepository.findByNameContainingAndPriceLessThanEqual(keyword, maxPrice);
+			} else {
+				// 価格検索上限が入力されていない場合：キーワード検索（Step1のコーディングに対応）
+				itemList = itemRepository.findByNameContaining(keyword);
+			}
 		} else {
-			// すべての商品を取得
-			itemList = itemRepository.findAll();
+			// キーワードが入力されていない場合
+			if (maxPrice != null) {
+				// 価格検索上限が入力されている場合：価格上限値以下検索
+				itemList = itemRepository.findByPriceLessThanEqual(maxPrice);
+			} else {
+				// 価格検索上限が入力されていない場合
+				if (categoryId != null) {
+					// カテゴリーのリンクが押下された場合：カテゴリー検索
+					itemList = itemRepository.findByCategoryId(categoryId);
+				} else {
+					// カテゴリーのリンクが押下されていない場合：全件検索（初期表示またはサイトタイトルのリンク押下時のコーディングに対応）
+					itemList = itemRepository.findAll();
+				}
+			}
 		}
 		
 		// 取得したカテゴリーリストと取得した商品をスコープに登録
@@ -51,4 +68,5 @@ public class ItemContoller {
 		// 画面遷移
 		return "items";
 	}
+	
 }
