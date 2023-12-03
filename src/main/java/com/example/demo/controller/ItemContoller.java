@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Category;
@@ -60,6 +61,17 @@ public class ItemContoller {
 		model.addAttribute("maxPrice", maxPrice);
 		// 画面遷移
 		return "items";
+	}
+	
+	// 商品詳細画面表示
+	@GetMapping("/items/{id}")
+	public String show(
+			@PathVariable("id") Integer id,
+			Model model) {
+		// 取得した商品をスコープに登録
+		model.addAttribute("item", new Item());
+		// 画面遷移
+		return "itemDetail";
 	}
 	
 }
