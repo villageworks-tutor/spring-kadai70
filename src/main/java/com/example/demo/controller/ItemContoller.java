@@ -25,6 +25,7 @@ public class ItemContoller {
 	@GetMapping("/items")
 	public String index(
 			@RequestParam(name = "keyword", defaultValue = "") String keyword,
+			@RequestParam(name = "maxPrice", defaultValue = "") Integer maxPrice,
 			@RequestParam(name = "categoryId", defaultValue = "") Integer categoryId,
 			Model model) {
 		
@@ -33,15 +34,22 @@ public class ItemContoller {
 		List<Category> categoryList = categoryRepository.findAll();
 		
 		// リクエストパラメータの有無によって商品リストの取得を分岐
+		// TODO: この商品リスト取得はオブジェクト指向の立場からサービスとして分割するのが適切
 		List<Item> itemList = null;
-		if (!keyword.isEmpty()) {
-			// k－ワード検索
+		if (!keyword.isEmpty() && maxPrice != null) {
+			// キーワードが入力されかつ価格検索上限値が入力されている場合：キーワード検索かつ価格上限値検索
+			itemList = itemRepository.findByNameContainingAndPriceLessThanEqual(keyword, maxPrice);
+		} else if (!keyword.isEmpty()) {
+			// キーワードが入力されかつ価格上限値が入力されていない場合：キーワード検索
 			itemList = itemRepository.findByNameContaining(keyword);
+		} else if (maxPrice != null) {
+			// キーワードが入力されずかつ価格上限値が入力されている場合：価格上限値以下検索
+			itemList = itemRepository.findByPriceLessThanEqual(maxPrice);
 		} else if (categoryId != null) {
-			// カテゴリー検索
+			// キーワードも価格上限値も入力されていない場合でかつカテゴリーのリンクが押下された場合：カテゴリ検索
 			itemList = itemRepository.findByCategoryId(categoryId);
 		} else {
-			// すべての商品を取得
+			// 上記以外の場合（初期表示およびサイト名のリンクが押下された場合）：全検索
 			itemList = itemRepository.findAll();
 		}
 		
@@ -51,4 +59,5 @@ public class ItemContoller {
 		// 画面遷移
 		return "items";
 	}
+	
 }
