@@ -39,13 +39,13 @@ public class ItemContoller {
 		if (!keyword.isEmpty() && maxPrice != null) {
 			// キーワードが入力されかつ価格検索上限値が入力されている場合：キーワード検索かつ価格上限値検索
 			itemList = itemRepository.findByNameContainingAndPriceLessThanEqual(keyword, maxPrice);
-		} else if (!keyword.isEmpty() && maxPrice == null) {
+		} else if (!keyword.isEmpty()) {
 			// キーワードが入力されかつ価格上限値が入力されていない場合：キーワード検索
 			itemList = itemRepository.findByNameContaining(keyword);
-		} else if (keyword.isEmpty() && maxPrice != null) {
+		} else if (maxPrice != null) {
 			// キーワードが入力されずかつ価格上限値が入力されている場合：価格上限値以下検索
 			itemList = itemRepository.findByPriceLessThanEqual(maxPrice);
-		} else if (keyword.isEmpty() && maxPrice == null && categoryId != null) {
+		} else if (categoryId != null) {
 			// キーワードも価格上限値も入力されていない場合でかつカテゴリーのリンクが押下された場合：カテゴリ検索
 			itemList = itemRepository.findByCategoryId(categoryId);
 		} else {
