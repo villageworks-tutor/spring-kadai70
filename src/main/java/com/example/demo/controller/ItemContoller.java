@@ -53,9 +53,11 @@ public class ItemContoller {
 			itemList = itemRepository.findAll();
 		}
 		
-		// 取得したカテゴリーリストと取得した商品をスコープに登録
+		// 取得したカテゴリーリスト、取得した商品および入力した検索値をスコープに登録
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("itemList", itemList);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("maxPrice", maxPrice);
 		// 画面遷移
 		return "items";
 	}

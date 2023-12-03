@@ -13,8 +13,8 @@
 	<main>
 		<nav>
 			<form action="/items" method="get">
-				<input type="text" name="keyword" placeholder="商品名" /> |
-				<input type="number" name="maxPrice" placeholder="価格" />円以下
+				<input type="text" name="keyword" placeholder="商品名" th:value="${keyword}" /> |
+				<input type="number" name="maxPrice" placeholder="価格" th:value="${maxPrice}" />円以下
 				<button>検索</button>
 			</form>
 			<a href="/items">全商品</a>
